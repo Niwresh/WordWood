@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Wordwood - A fantasy library word puzzle game">
+<title>Wordwood · The Verdant Library</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div id="app">
+  <!-- MASCOT & HEADER -->
+  <header class="game-header" id="gameHeader">
+    <div class="mascot-area" id="mascotArea">
+      <svg class="mascot-svg" viewBox="0 0 100 100" width="56" height="56" aria-hidden="true">
+        <defs>
+          <radialGradient id="owlBody" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#f7e9b0"/>
+            <stop offset="100%" stop-color="#c9a84c"/>
+          </radialGradient>
+          <radialGradient id="owlEye" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff"/>
+            <stop offset="100%" stop-color="#b0d0e0"/>
+          </radialGradient>
+          <linearGradient id="owlFeather" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8a6f3a"/>
+            <stop offset="100%" stop-color="#5a4420"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="50" cy="58" rx="34" ry="36" fill="url(#owlBody)" stroke="#5a4420" stroke-width="2"/>
+        <ellipse cx="32" cy="42" rx="13" ry="15" fill="url(#owlEye)" stroke="#3a2a10" stroke-width="1.5"/>
+        <ellipse cx="68" cy="42" rx="13" ry="15" fill="url(#owlEye)" stroke="#3a2a10" stroke-width="1.5"/>
+        <circle cx="32" cy="42" r="6" fill="#1e1a10"/>
+        <circle cx="68" cy="42" r="6" fill="#1e1a10"/>
+        <circle cx="34" cy="40" r="2" fill="#fff"/>
+        <circle cx="70" cy="40" r="2" fill="#fff"/>
+        <polygon points="50,52 44,64 56,64" fill="#e8a838" stroke="#8a6010" stroke-width="1.5"/>
+        <path d="M20 78 Q50 92 80 78" stroke="#5a4420" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M18 30 Q28 14 50 10 Q72 14 82 30" fill="url(#owlFeather)" stroke="#3a2a10" stroke-width="1.5"/>
+        <circle cx="24" cy="26" r="4" fill="#e8d070"/>
+        <circle cx="76" cy="26" r="4" fill="#e8d070"/>
+      </svg>
+      <span class="mascot-name">WEWENG</span>
+    </div>
+    <h1 class="game-title">WordWIN</h1>
+    <div class="score-panel">
+      <span class="score-label">Score</span>
+      <span id="scoreDisplay" class="score-value">0</span>
+    </div>
+  </header>
+
+  <!-- MAIN MENU SCREEN -->
+  <section id="screenMainMenu" class="screen active">
+    <div class="menu-card">
+      <h2 class="menu-heading">The Verdant Library</h2>
+      <p class="menu-sub">Gather words from the enchanted shelves</p>
+      <div class="menu-buttons">
+        <button class="btn primary" id="btnPlay">▶ Play</button>
+        <button class="btn" id="btnDaily">🌙 Daily Challenge</button>
+        <button class="btn" id="btnHowTo">📖 How To Play</button>
+        <button class="btn" id="btnAchievements">🏆 Achievements</button>
+        <button class="btn" id="btnStats">📊 Statistics</button>
+        <button class="btn" id="btnSettings">⚙ Settings</button>
+      </div>
+      <div class="menu-footer">
+        <span>Best: <strong id="menuBestScore">0</strong></span>
+        <span>Level: <strong id="menuHighestLevel">1</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="screenGame" class="screen">
+    <div class="game-topbar">
+      <div class="level-info">
+        <span class="level-badge">Lvl <span id="levelDisplay">1</span></span>
+        <div class="objective-box">
+          <span class="objective-label">Objective</span>
+          <span id="objectiveText" class="objective-text">Score 1000</span>
+        </div>
+      </div>
+      <div class="combo-box" id="comboBox">
+        <span class="combo-label">Combo</span>
+        <span id="comboDisplay" class="combo-value">x1</span>
+      </div>
+    </div>
+
+    <div id="board" class="board" role="grid" aria-label="Word grid"></div>
+
+    <div class="word-controls">
+      <div class="current-word-box">
+        <span id="currentWord" class="current-word">...</span>
+      </div>
+            <div class="type-hint" id="typeHint">⌨ Type or tap letters · Enter to submit · Backspace to undo</div>
+      <input id="wordTypingInput" type="text" autocomplete="off" autocorrect="off"
+             autocapitalize="characters" spellcheck="false"
+             style="position:absolute;opacity:0;width:1px;height:1px;left:-9999px;top:0;border:0;padding:0;"
+             aria-hidden="true" tabindex="-1">
+      <div class="button-row">
+        <button id="submitBtn" class="btn small primary">📖 Submit</button>
+        <button id="clearBtn" class="btn small">🧹 Clear</button>
+        <button id="shuffleBtn" class="btn small">🌀 Shuffle</button>
+        <button id="pauseBtn" class="btn small">⏸ Pause</button>
+      </div>
+      <div id="messageArea" class="message-area" aria-live="polite"></div>
+    </div>
+
+    <div class="progress-track">
+      <div id="levelProgress" class="progress-fill"></div>
+    </div>
+  </section>
+
+  <!-- PAUSE SCREEN -->
+  <section id="screenPause" class="screen">
+    <div class="menu-card pause-card">
+      <h2>⏸ Paused</h2>
+      <div class="menu-buttons">
+        <button class="btn primary" id="btnResume">▶ Resume</button>
+        <button class="btn" id="btnRestart">🔄 Restart</button>
+        <button class="btn" id="btnQuit">🏠 Main Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEVEL COMPLETE SCREEN -->
+  <section id="screenLevelComplete" class="screen">
+    <div class="menu-card complete-card">
+      <h2>✨ Level Complete! ✨</h2>
+      <div class="complete-stats">
+        <div><span>Score</span><strong id="completeScore">0</strong></div>
+        <div><span>Words</span><strong id="completeWords">0</strong></div>
+        <div><span>Best Combo</span><strong id="completeCombo">x1</strong></div>
+      </div>
+      <div class="menu-buttons">
+        <button class="btn primary" id="btnNextLevel">▶ Next Level</button>
+        <button class="btn" id="btnCompleteQuit">🏠 Main Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME OVER SCREEN -->
+  <section id="screenGameOver" class="screen">
+    <div class="menu-card gameover-card">
+      <h2>💀 Game Over</h2>
+      <p id="gameOverReason" class="gameover-reason">The library closes...</p>
+      <div class="complete-stats">
+        <div><span>Score</span><strong id="overScore">0</strong></div>
+        <div><span>Words</span><strong id="overWords">0</strong></div>
+        <div><span>Level</span><strong id="overLevel">1</strong></div>
+      </div>
+      <div class="menu-buttons">
+        <button class="btn primary" id="btnPlayAgain">▶ Play Again</button>
+        <button class="btn" id="btnOverMenu">🏠 Main Menu</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO PLAY SCREEN -->
+  <section id="screenHowTo" class="screen">
+    <div class="menu-card info-card">
+      <h2>📖 How To Play</h2>
+      <div class="info-content">
+        <p><strong>Select letters</strong> on the 8×10 board by dragging (mouse or touch). Adjacent letters connect horizontally, vertically, or diagonally.</p>
+        <p>Form words of <strong>3+ letters</strong>. Longer words score more!</p>
+        <p><strong>Special tiles:</strong></p>
+        <ul>
+          <li>🟡 <strong>Gold</strong> — bonus points</li>
+          <li>🌈 <strong>Rainbow</strong> — wildcard letter</li>
+          <li>💣 <strong>Bomb</strong> — clears nearby tiles</li>
+          <li>⭐ <strong>Star</strong> — score multiplier</li>
+          <li>💀 <strong>Danger</strong> — adds pressure</li>
+        </ul>
+        <p><strong>Combos</strong> build when you submit valid words consecutively. Invalid words reset your combo!</p>
+        <p><strong>Keyboard:</strong> ENTER submit · ESC pause · BACKSPACE clear · P pause · R restart</p>
+      </div>
+      <button class="btn" id="btnHowToBack">← Back</button>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS SCREEN -->
+  <section id="screenAchievements" class="screen">
+    <div class="menu-card info-card">
+      <h2>🏆 Achievements</h2>
+      <ul id="achievementList" class="achievement-list"></ul>
+      <button class="btn" id="btnAchievementsBack">← Back</button>
+    </div>
+  </section>
+
+  <!-- STATISTICS SCREEN -->
+  <section id="screenStats" class="screen">
+    <div class="menu-card info-card">
+      <h2>📊 Statistics</h2>
+      <div class="stats-grid">
+        <div><span>Best Score</span><strong id="statBestScore">0</strong></div>
+        <div><span>Highest Level</span><strong id="statHighestLevel">1</strong></div>
+        <div><span>Games Played</span><strong id="statGamesPlayed">0</strong></div>
+        <div><span>Total Words</span><strong id="statTotalWords">0</strong></div>
+        <div><span>Longest Word</span><strong id="statLongestWord">—</strong></div>
+        <div><span>Highest Combo</span><strong id="statHighestCombo">x1</strong></div>
+      </div>
+      <button class="btn" id="btnStatsBack">← Back</button>
+    </div>
+  </section>
+
+  <!-- SETTINGS SCREEN -->
+  <section id="screenSettings" class="screen">
+    <div class="menu-card info-card">
+      <h2>⚙ Settings</h2>
+      <div class="settings-list">
+        <label class="setting-row">
+          <span>Sound Effects</span>
+          <input type="checkbox" id="settingSound" checked>
+        </label>
+        <label class="setting-row">
+          <span>Music</span>
+          <input type="checkbox" id="settingMusic" checked>
+        </label>
+        <label class="setting-row">
+          <span>Volume</span>
+          <input type="range" id="settingVolume" min="0" max="1" step="0.05" value="0.5">
+        </label>
+        <label class="setting-row">
+          <span>Reduced Motion</span>
+          <input type="checkbox" id="settingReducedMotion">
+        </label>
+        <button class="btn danger" id="btnResetProgress">🗑 Reset Progress</button>
+      </div>
+      <button class="btn" id="btnSettingsBack">← Back</button>
+    </div>
+  </section>
+
+  <!-- DAILY CHALLENGE SCREEN -->
+  <section id="screenDaily" class="screen">
+    <div class="menu-card info-card">
+      <h2>🌙 Daily Challenge</h2>
+      <p id="dailyDate" class="daily-date"></p>
+      <div class="daily-info">
+        <div><span>Objective</span><strong id="dailyObjective">—</strong></div>
+        <div><span>Status</span><strong id="dailyStatus">Not started</strong></div>
+      </div>
+      <div class="menu-buttons">
+        <button class="btn primary" id="btnDailyStart">▶ Start Challenge</button>
+        <button class="btn" id="btnDailyBack">← Back</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOAST & EFFECTS -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+  <div id="particleLayer" class="particle-layer" aria-hidden="true"></div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/dictionary.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/board.js"></script>
+<script src="js/specialTiles.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/dailyChallenge.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/game.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

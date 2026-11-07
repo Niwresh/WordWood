@@ -1,0 +1,128 @@
+/* ============================================================
+   WORDWOOD — Responsive adjustments
+   ============================================================ */
+
+/* ---------- TABLET & SMALL DESKTOP ---------- */
+@media (max-width: 720px) {
+  .game-title { letter-spacing: 2px; }
+  .board { max-height: 55vh; }
+  .menu-card { padding: 22px 18px; }
+}
+
+/* ---------- MOBILE PORTRAIT ---------- */
+@media (max-width: 520px) {
+  #app { padding: 4px 6px 8px; }
+
+  .game-header {
+    padding: 4px 4px 8px;
+    gap: 4px;
+  }
+
+  .mascot-area { padding: 2px 8px 2px 4px; }
+  .mascot-name { display: none; }
+  .mascot-svg { width: 42px; height: 42px; }
+
+  .game-title {
+    font-size: 1.15rem;
+    letter-spacing: 1.5px;
+  }
+
+  .score-panel { padding: 2px 8px; min-width: 62px; }
+
+  .game-topbar {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 2px 2px 6px;
+  }
+
+  .objective-box { max-width: none; }
+  .objective-text { font-size: 0.74rem; }
+
+  .combo-box { padding: 2px 8px; min-width: 52px; }
+  .combo-value { font-size: 0.95rem; }
+
+  .board {
+    gap: 3px;
+    padding: 5px;
+    border-radius: var(--radius-md);
+    max-height: 52vh;
+  }
+
+  .tile {
+    font-size: clamp(0.7rem, 3.6vw, 1rem);
+    border-radius: 6px;
+    border-width: 1px;
+  }
+
+  .tile .special-indicator { font-size: 0.5em; top: 0; right: 1px; }
+
+  .current-word-box { min-height: 36px; padding: 4px 10px; }
+  .current-word { font-size: 1rem; letter-spacing: 2px; }
+
+  .btn.small { padding: 7px 9px; font-size: 0.72rem; }
+
+  .message-area { font-size: 0.74rem; min-height: 16px; }
+
+  .word-controls { gap: 4px; padding: 5px 2px 2px; }
+
+  .menu-card { padding: 18px 14px; border-radius: var(--radius-md); }
+  .menu-heading { font-size: 1.2rem; }
+  .btn { padding: 9px 14px; font-size: 0.86rem; }
+
+  .stats-grid { gap: 7px; }
+  .stats-grid strong { font-size: 0.95rem; }
+
+  .complete-stats strong { font-size: 1.05rem; }
+
+  .info-content { max-height: 42vh; font-size: 0.85rem; }
+  .achievement-list { max-height: 42vh; }
+}
+
+/* ---------- VERY SMALL / NARROW ---------- */
+@media (max-width: 380px) {
+  .game-title { font-size: 1rem; letter-spacing: 1px; }
+  .score-value { font-size: 0.95rem; }
+  .board { gap: 2px; padding: 4px; }
+  .tile { font-size: clamp(0.62rem, 3.4vw, 0.9rem); }
+  .btn.small { padding: 6px 7px; font-size: 0.66rem; }
+  .current-word { font-size: 0.9rem; letter-spacing: 1px; }
+}
+
+/* ---------- SHORT SCREENS (landscape phones) ---------- */
+@media (max-height: 640px) {
+  .board { max-height: 46vh; }
+  .game-title { font-size: 1.1rem; }
+  .current-word-box { min-height: 30px; padding: 2px 10px; }
+  .current-word { font-size: 0.95rem; }
+  .btn.small { padding: 6px 9px; font-size: 0.72rem; }
+  .game-topbar { padding: 2px 4px 4px; }
+  .menu-card { padding: 14px; }
+}
+
+@media (max-height: 560px) {
+  .board { max-height: 42vh; }
+  .mascot-svg { width: 34px; height: 34px; }
+  .score-panel { padding: 1px 8px; }
+}
+
+/* ---------- LANDSCAPE TABLET / DESKTOP ---------- */
+@media (min-width: 900px) {
+  #app { max-width: 900px; padding: 12px 18px 16px; }
+  .board { max-height: 60vh; }
+  .game-title { font-size: 2.2rem; }
+}
+
+/* ---------- TOUCH DEVICE TWEAKS ---------- */
+@media (hover: none) {
+  .btn:hover { filter: none; }
+  .tile:hover { transform: none; }
+}
+
+/* ---------- SAFE AREA (notched phones) ---------- */
+@supports (padding: max(0px)) {
+  #app {
+    padding-left: max(6px, env(safe-area-inset-left));
+    padding-right: max(6px, env(safe-area-inset-right));
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
